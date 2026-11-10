@@ -4,98 +4,412 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Imagine Peace | Zonta District 27</title>
+  <title>Imagine Peace … | Zonta District 27</title>
   <style>
+    :root {
+      --ink: #203f4e;
+      --teal: #109eaa;
+      --green: #4e827b;
+      --orange: #f4a340;
+      --cream: #f8f6f3;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f8f6f3;
-      color: #263b42;
-      text-align: center;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
     }
-    main {
-      max-width: 680px;
-      margin: 65px auto;
-      padding: 20px;
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 28px 24px;
     }
-    h1 { color: #078995; font-size: 48px; }
-    .card {
-      background: white;
-      padding: 36px;
-      border-radius: 20px;
-      box-shadow: 0 8px 28px #0000000a;
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
     }
-    textarea {
-      box-sizing: border-box;
-      width: 100%;
-      min-height: 130px;
-      padding: 15px;
-      border: 1px solid #bac6c9;
-      border-radius: 10px;
+
+    .brand {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1.4px;
+    }
+
+    .brand span { color: var(--orange); }
+
+    nav a {
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 700;
+      margin-left: 22px;
+    }
+
+    .hero {
+      padding: 65px 0 38px;
+    }
+
+    .eyebrow {
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 20px 0;
+      font-size: clamp(65px, 11vw, 140px);
+      line-height: .87;
+      letter-spacing: -5px;
+      font-weight: 900;
+    }
+
+    h1 span {
+      color: var(--teal);
+      display: block;
+    }
+
+    .intro {
+      max-width: 620px;
+      font-size: 20px;
+      line-height: 1.6;
+    }
+
+    h2 {
+      font-size: 30px;
+      letter-spacing: -1px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 25px;
+    }
+
+    .peace-card {
+      min-height: 270px;
+      padding: 25px;
+      border: 0;
+      border-radius: 22px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform .2s;
       font: inherit;
-      resize: vertical;
+      color: var(--ink);
     }
-    button {
-      margin-top: 20px;
-      padding: 14px 30px;
-      background: #078995;
+
+    .peace-card:hover,
+    .peace-card:focus-visible {
+      transform: translateY(-5px);
+    }
+
+    .peace-card:nth-child(1) { background: #d9eeee; }
+    .peace-card:nth-child(2) { background: #fce6c6; }
+    .peace-card:nth-child(3) { background: #dfe8df; }
+
+    .card-number {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .card-question {
+      font-size: 27px;
+      font-weight: 800;
+      line-height: 1.15;
+    }
+
+    .card-arrow {
+      align-self: flex-end;
+      font-size: 30px;
+    }
+
+    .actions {
+      margin: 28px 0 60px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    button.action,
+    button.submit {
+      border: 0;
+      background: var(--ink);
       color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 17px;
+      padding: 16px 25px;
+      border-radius: 12px;
+      font: inherit;
+      font-weight: 700;
       cursor: pointer;
     }
-    button:disabled { opacity: .6; cursor: wait; }
-    #message { margin-top: 20px; }
-    footer { margin-top: 45px; color: #667; }
+
+    button.action.secondary {
+      background: transparent;
+      color: var(--ink);
+      border: 2px solid var(--ink);
+    }
+
+    .play-area {
+      display: none;
+      background: white;
+      border-radius: 28px;
+      padding: 35px;
+      margin: 30px 0 70px;
+      box-shadow: 0 12px 40px #0000000a;
+    }
+
+    .play-area.active { display: block; }
+
+    .play-area h2 {
+      font-size: clamp(28px, 5vw, 44px);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 150px;
+      border: 1px solid #bac6c9;
+      border-radius: 12px;
+      padding: 18px;
+      font: inherit;
+      font-size: 17px;
+      resize: vertical;
+    }
+
+    button.submit {
+      background: var(--teal);
+      margin-top: 18px;
+    }
+
+    button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    #message {
+      min-height: 24px;
+      margin-top: 18px;
+      font-weight: 700;
+    }
+
+    .wall {
+      background: #e8f1ef;
+      padding: 45px;
+      border-radius: 25px;
+      margin-bottom: 60px;
+    }
+
+    footer {
+      border-top: 1px solid #d7d9d7;
+      padding: 25px 0;
+      color: #657780;
+      font-size: 13px;
+    }
+
+    @media (max-width: 700px) {
+      .card-grid { grid-template-columns: 1fr; }
+      .peace-card { min-height: 210px; }
+      h1 { letter-spacing: -3px; }
+      .hero { padding-top: 45px; }
+      .play-area, .wall { padding: 25px; }
+      nav a { margin-left: 10px; }
+    }
   </style>
 </head>
+
 <body>
-  <main>
-    <h1>Imagine Peace</h1>
-    <p>Different voices. Different perspectives.<br>
-       One shared conversation about peace.</p>
+  <div class="container">
 
-    <section class="card">
-      <p>PEACE CARD 01</p>
-      <h2>What does peace mean to you?</h2>
-      <p>There are no right or wrong answers.
-         We would love to hear your perspective.</p>
+    <header>
+      <div class="brand">
+        ZONTA DISTRICT 27 <span>✳</span> PEACE INITIATIVE
+      </div>
+      <nav>
+        <a href="#play">Play</a>
+        <a href="#peace-wall">Peace Wall</a>
+      </nav>
+    </header>
 
-      <form id="peaceForm">
-        <textarea id="response" maxlength="2000"
-          placeholder="Share your thoughts..."
-          aria-label="Your thoughts about peace"
-          required></textarea>
-        <button id="submitButton" type="submit">
-          Share my perspective
-        </button>
-      </form>
+    <main>
+      <section class="hero">
+        <p class="eyebrow">
+          Three cards · Five languages · One conversation
+        </p>
 
-      <p id="message" role="status" aria-live="polite"></p>
-    </section>
+        <h1>IMAGINE <span>PEACE …</span></h1>
+
+        <p class="intro">
+          What if peace began with one little thought?
+          Pick a card. Share your idea. Pass it on.
+          <strong>The whole family can play!</strong>
+        </p>
+      </section>
+
+      <section id="play">
+        <h2>Pick your card.</h2>
+        <p>Tap any card to play ↗</p>
+
+        <div class="card-grid">
+          <button class="peace-card" type="button"
+                  onclick="chooseCard(1)">
+            <span class="card-number">PEACE CARD 01</span>
+            <span class="card-question">
+              What does peace mean to you?
+            </span>
+            <span class="card-arrow">↗</span>
+          </button>
+
+          <button class="peace-card" type="button"
+                  onclick="chooseCard(2)">
+            <span class="card-number">PEACE CARD 02</span>
+            <span class="card-question">
+              When do you feel most at peace?
+            </span>
+            <span class="card-arrow">↗</span>
+          </button>
+
+          <button class="peace-card" type="button"
+                  onclick="chooseCard(3)">
+            <span class="card-number">PEACE CARD 03</span>
+            <span class="card-question">
+              What could you do to bring peace closer?
+            </span>
+            <span class="card-arrow">↗</span>
+          </button>
+        </div>
+
+        <div class="actions">
+          <button class="action" type="button"
+                  onclick="surpriseMe()">
+            ✳ Surprise me
+          </button>
+          <button class="action secondary" type="button"
+                  onclick="document.getElementById('peace-wall').scrollIntoView({behavior:'smooth'})">
+            Explore the Peace Wall ↗
+          </button>
+        </div>
+      </section>
+
+      <section class="play-area" id="play-area"
+               aria-labelledby="selected-question">
+        <p class="eyebrow" id="selected-number">
+          PEACE CARD 01
+        </p>
+        <h2 id="selected-question"></h2>
+
+        <p>
+          There are no right or wrong answers.
+          We would love to hear your perspective.
+        </p>
+
+        <form id="peaceForm">
+          <textarea
+            id="response"
+            maxlength="2000"
+            placeholder="Share your thoughts..."
+            aria-label="Your thoughts about peace"
+            required></textarea>
+
+          <button class="submit" id="submitButton"
+                  type="submit">
+            Share my perspective ↗
+          </button>
+        </form>
+
+        <p id="message" role="status"
+           aria-live="polite"></p>
+      </section>
+
+      <section class="wall" id="peace-wall">
+        <p class="eyebrow">Different voices. Shared hopes.</p>
+        <h2>The Peace Wall</h2>
+        <p>
+          Every perspective adds something to our
+          conversation about peace.
+        </p>
+        <p>
+          Our collection of shared thoughts is growing.
+          Selected contributions will appear here
+          after review.
+        </p>
+      </section>
+    </main>
 
     <footer>
-      A Zonta District 27 Peace Initiative | Pilot 2026
+      IMAGINE PEACE … · PASS THE PEACE · Zonta District 27
+      <p>
+        Made for conversation, across generations
+        and languages. | Pilot 2026
+      </p>
     </footer>
-  </main>
+  </div>
 
   <script>
     const endpoint =
       "https://lvupsqykwfpyjcfbhwmd.supabase.co/functions/v1/submit-peace-contribution";
 
+    const questions = {
+      1: "What does peace mean to you?",
+      2: "When do you feel most at peace?",
+      3: "What could you do to bring peace closer?"
+    };
+
+    let selectedCard = 1;
+
+    function chooseCard(number) {
+      selectedCard = number;
+
+      document.getElementById("selected-number")
+        .textContent =
+          "PEACE CARD " + String(number).padStart(2, "0");
+
+      document.getElementById("selected-question")
+        .textContent = questions[number];
+
+      document.getElementById("response").value = "";
+      document.getElementById("message").textContent = "";
+
+      const area = document.getElementById("play-area");
+      area.classList.add("active");
+      area.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+
+    function surpriseMe() {
+      const number = Math.floor(Math.random() * 3) + 1;
+      chooseCard(number);
+    }
+
     document.getElementById("peaceForm")
       .addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        const button = document.getElementById("submitButton");
-        const message = document.getElementById("message");
-        const response = document.getElementById("response").value.trim();
+        const button =
+          document.getElementById("submitButton");
+        const message =
+          document.getElementById("message");
+        const response =
+          document.getElementById("response").value.trim();
 
         if (!response) return;
 
         button.disabled = true;
-        message.textContent = "Sending your contribution...";
+        message.textContent =
+          "Sending your contribution...";
 
         try {
           const result = await fetch(endpoint, {
@@ -104,7 +418,7 @@
               "Content-Type": "application/json"
             },
             body: JSON.stringify({
-              card_number: 1,
+              card_number: selectedCard,
               response_text: response
             })
           });
@@ -116,6 +430,7 @@
           message.textContent =
             "Thank you! Your perspective has been shared.";
           document.getElementById("peaceForm").reset();
+
         } catch (error) {
           message.textContent =
             "Sorry, something went wrong. Please try again.";
