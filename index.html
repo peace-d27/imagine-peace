@@ -15,52 +15,114 @@
     }
     main {
       max-width: 680px;
-      margin: 80px auto;
-      padding: 30px;
+      margin: 65px auto;
+      padding: 20px;
     }
-    h1 {
-      font-size: 3rem;
-      color: #087e8b;
-    }
-    p {
-      font-size: 1.2rem;
-      line-height: 1.7;
-    }
+    h1 { color: #078995; font-size: 48px; }
     .card {
-      margin-top: 35px;
-      padding: 30px;
       background: white;
-      border-radius: 18px;
-      box-shadow: 0 4px 20px #00000010;
+      padding: 36px;
+      border-radius: 20px;
+      box-shadow: 0 8px 28px #0000000a;
     }
-    footer {
-      margin-top: 50px;
-      font-size: 0.9rem;
-      color: #667;
+    textarea {
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 130px;
+      padding: 15px;
+      border: 1px solid #bac6c9;
+      border-radius: 10px;
+      font: inherit;
+      resize: vertical;
     }
+    button {
+      margin-top: 20px;
+      padding: 14px 30px;
+      background: #078995;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 17px;
+      cursor: pointer;
+    }
+    button:disabled { opacity: .6; cursor: wait; }
+    #message { margin-top: 20px; }
+    footer { margin-top: 45px; color: #667; }
   </style>
 </head>
 <body>
   <main>
     <h1>Imagine Peace</h1>
-    <p>Different voices. Different perspectives.
+    <p>Different voices. Different perspectives.<br>
        One shared conversation about peace.</p>
 
-    <div class="card">
+    <section class="card">
+      <p>PEACE CARD 01</p>
       <h2>What does peace mean to you?</h2>
-      <p>
-        Imagine Peace is an interactive,
-        multilingual card game inviting people
-        across generations and countries to
-        explore peace through their own experiences.
-      </p>
-      <p><strong>Our pilot is taking shape.</strong></p>
-    </div>
+      <p>There are no right or wrong answers.
+         We would love to hear your perspective.</p>
+
+      <form id="peaceForm">
+        <textarea id="response" maxlength="2000"
+          placeholder="Share your thoughts..."
+          aria-label="Your thoughts about peace"
+          required></textarea>
+        <button id="submitButton" type="submit">
+          Share my perspective
+        </button>
+      </form>
+
+      <p id="message" role="status" aria-live="polite"></p>
+    </section>
 
     <footer>
-      A Zonta District 27 Peace Initiative
-      | Pilot 2026
+      A Zonta District 27 Peace Initiative | Pilot 2026
     </footer>
   </main>
+
+  <script>
+    const endpoint =
+      "https://lvupsqykwfpyjcfbhwmd.supabase.co/functions/v1/submit-peace-contribution";
+
+    document.getElementById("peaceForm")
+      .addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const button = document.getElementById("submitButton");
+        const message = document.getElementById("message");
+        const response = document.getElementById("response").value.trim();
+
+        if (!response) return;
+
+        button.disabled = true;
+        message.textContent = "Sending your contribution...";
+
+        try {
+          const result = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              card_number: 1,
+              response_text: response
+            })
+          });
+
+          if (!result.ok) {
+            throw new Error("Submission failed");
+          }
+
+          message.textContent =
+            "Thank you! Your perspective has been shared.";
+          document.getElementById("peaceForm").reset();
+        } catch (error) {
+          message.textContent =
+            "Sorry, something went wrong. Please try again.";
+        } finally {
+          button.disabled = false;
+        }
+      });
+  </script>
 </body>
 </html>
